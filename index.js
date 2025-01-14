@@ -1,22 +1,36 @@
 import axios from 'axios';
 import "dotenv/config";
+import HttpsProxyAgent from 'https-proxy-agent';
 
-// Configs
+// Configuration
 const TOKEN = process.env.AUTH_TOKEN;
-const API_URL = process.emit.API_URL;
-const POLLING_INTERVAL = process.env.POLLING_INTERVAL // 30 seconds
+const API_URL = "https://api.depined.org/api/user/widget-connect";
+const POLLING_INTERVAL = process.env.POLLING_INTERVAL;
+const USE_PROXY = process.env.USE_PROXY === 'true';
+const PROXY_HOST = process.env.PROXY_HOST;
+const PROXY_PORT = process.env.PROXY_PORT;
 
 let connectionState = false;
 let pollTimer = null;
 let pingTimer = null;
 
-// Initialize axios instance
-const api = axios.create({
+// Initialize axios instance with conditional proxy
+const axiosConfig = {
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${TOKEN}`
   }
-});
+};
+
+// Add proxy configuration only if enabled
+if (USE_PROXY && PROXY_HOST && PROXY_PORT) {
+  const httpsAgent = new HttpsProxyAgent(`http://${PROXY_HOST}:${PROXY_PORT}`);
+  axiosConfig.httpsAgent = httpsAgent;
+  axiosConfig.proxy = false;
+  console.log(`[${new Date().toISOString()}] Connecting through proxy: ${PROXY_HOST}:${PROXY_PORT}`);
+}
+
+const api = axios.create(axiosConfig);
 
 const keepAlivePing = () => {
   console.log(`[${new Date().toISOString()}] Sending keep-alive ping...`);
