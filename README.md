@@ -33,9 +33,11 @@ A Node.js service that maintains a persistent connection with the Depined API th
 3. Configure environment variables:
    Create a `.env` file with the following variables:
    ```properties
-   AUTH_TOKEN=your_api_token_here
-   API_URL=https://api.depined.org/api/user/widget-connect
+   AUTH_TOKEN=your_token_here
    POLLING_INTERVAL=30000
+   USE_PROXY=flase # change it if you wanna use proxy
+   PROXY_HOST=
+   PROXY_PORT=
    ```
 
 ## Usage
