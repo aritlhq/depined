@@ -35,7 +35,7 @@ A Node.js service that maintains a persistent connection with the Depined API th
    ```properties
    AUTH_TOKEN=your_token_here
    POLLING_INTERVAL=30000
-   USE_PROXY=flase # change it if you wanna use proxy
+   USE_PROXY= false # change it if you wanna use proxy
    PROXY_HOST=
    PROXY_PORT=
    ```
